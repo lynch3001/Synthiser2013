@@ -7,8 +7,68 @@ import flash.events.TimerEvent;
 
 //omg! Variables!?
 var pausePoint:Number = 0.00;
+var my_songs:XMLList;
+var my_total:Number;
+
+var my_sound:Sound;
+var my_channel:SoundChannel;
+
+var current_song:Number = 0;
+
+var song_position:Number;
+var song_paused:Boolean;
+var myXMLLoader:URLLoader = new URLLoader();
+myXMLLoader.load(new URLRequest("playlist.xml"));
 //Boolean to the left of me
 var checkboxStatus:Boolean;
+
+
+myXMLLoader.addEventListener(Event.COMPLETE, processXML);
+
+function processXML (e:Event):void
+{
+	var myXML:XML = new XML(e.target.data);
+
+	my_songs = myXML.SONG;
+	my_total = my_songs.length();
+	
+	myXMLLoader.removeEventListener(Event.COMPLETE, processXML);
+	myXMLLoader = null;
+}
+
+playButtonT1.addEventListener(MouseEvent.CLICK, onPlay1);
+
+function onPlay1(e:MouseEvent):void {
+
+		playSong(current_song);
+}
+
+function playSong(mySong:Number):void{
+var myChannel = my_songs[mySong].@CHANNEL;
+var myTrack = my_songs[mySong].@TRACK;
+var myURL = my_songs[mySong].@URL;
+
+ trace (my_songs[mySong].@CHANNEL);
+if (my_channel) {
+		my_channel.stop();
+		my_channel.removeEventListener(Event.SOUND_COMPLETE, onNext);
+	}
+
+	my_sound = new Sound();
+	my_sound.load(new URLRequest(myURL)); 
+	my_channel = my_sound.play();
+	my_channel.addEventListener(Event.SOUND_COMPLETE, onNext);
+
+}
+
+function onNext(e:Event):void {
+	current_song++;
+	if (current_song>=my_total) {
+		current_song=0;
+	}
+	playSong(current_song);
+}
+
 //channel 1 booleans
 var isPlayingc1t01:Boolean = false;
 var isPlayingc1t02:Boolean = false;
@@ -297,141 +357,141 @@ var myChannel:SoundChannel = new SoundChannel();
 var timerbarStatus:String = "Stopped, at the start";
 
 //sound loading area
-mySoundc1t1.load(new URLRequest("Soundsc1t1.mp3"));
-mySoundc1t2.load(new URLRequest("Soundsc1t2.mp3"));
-mySoundc1t3.load(new URLRequest("Soundsc1t3.mp3"));
-mySoundc1t4.load(new URLRequest("Soundsc1t4.mp3"));
-mySoundc1t5.load(new URLRequest("Soundsc1t5.mp3"));
-mySoundc1t6.load(new URLRequest("Soundsc1t6.mp3"));
-mySoundc1t7.load(new URLRequest("Soundsc1t7.mp3"));
-mySoundc1t8.load(new URLRequest("Soundsc1t8.mp3"));
-mySoundc1t9.load(new URLRequest("Soundsc1t9.mp3"));
-mySoundc1t10.load(new URLRequest("Soundsc1t10.mp3"));
-mySoundc1t11.load(new URLRequest("Soundsc1t11.mp3"));
-mySoundc1t12.load(new URLRequest("Soundsc1t12.mp3"));
-mySoundc1t13.load(new URLRequest("Soundsc1t13.mp3"));
-mySoundc1t14.load(new URLRequest("Soundsc1t14.mp3"));
-mySoundc1t15.load(new URLRequest("Soundsc1t15.mp3"));
-mySoundc1t16.load(new URLRequest("Soundsc1t16.mp3"));
+mySoundc1t1.load(new URLRequest("/sound/Soundsc1t1.mp3"));
+mySoundc1t2.load(new URLRequest("/sound/Soundsc1t2.mp3"));
+mySoundc1t3.load(new URLRequest("/sound/Soundsc1t3.mp3"));
+mySoundc1t4.load(new URLRequest("/sound/Soundsc1t4.mp3"));
+mySoundc1t5.load(new URLRequest("/sound/Soundsc1t5.mp3"));
+mySoundc1t6.load(new URLRequest("/sound/Soundsc1t6.mp3"));
+mySoundc1t7.load(new URLRequest("/sound/Soundsc1t7.mp3"));
+mySoundc1t8.load(new URLRequest("/sound/Soundsc1t8.mp3"));
+mySoundc1t9.load(new URLRequest("/sound/Soundsc1t9.mp3"));
+mySoundc1t10.load(new URLRequest("/sound/Soundsc1t10.mp3"));
+mySoundc1t11.load(new URLRequest("/sound/Soundsc1t11.mp3"));
+mySoundc1t12.load(new URLRequest("/sound/Soundsc1t12.mp3"));
+mySoundc1t13.load(new URLRequest("/sound/Soundsc1t13.mp3"));
+mySoundc1t14.load(new URLRequest("/sound/Soundsc1t14.mp3"));
+mySoundc1t15.load(new URLRequest("/sound/Soundsc1t15.mp3"));
+mySoundc1t16.load(new URLRequest("/sound/Soundsc1t16.mp3"));
 
-mySoundc2t1.load(new URLRequest("Soundsc2t1.mp3"));
-mySoundc2t2.load(new URLRequest("Soundsc2t2.mp3"));
-mySoundc2t3.load(new URLRequest("Soundsc2t3.mp3"));
-mySoundc2t4.load(new URLRequest("Soundsc2t4.mp3"));
-mySoundc2t5.load(new URLRequest("Soundsc2t5.mp3"));
-mySoundc2t6.load(new URLRequest("Soundsc2t6.mp3"));
-mySoundc2t7.load(new URLRequest("Soundsc2t7.mp3"));
-mySoundc2t8.load(new URLRequest("Soundsc2t8.mp3"));
-mySoundc2t9.load(new URLRequest("Soundsc2t9.mp3"));
-mySoundc2t10.load(new URLRequest("Soundsc2t10.mp3"));
-mySoundc2t11.load(new URLRequest("Soundsc2t11.mp3"));
-mySoundc2t12.load(new URLRequest("Soundsc2t12.mp3"));
-mySoundc2t13.load(new URLRequest("Soundsc2t13.mp3"));
-mySoundc2t14.load(new URLRequest("Soundsc2t14.mp3"));
-mySoundc2t15.load(new URLRequest("Soundsc1t15.mp3"));
-mySoundc2t16.load(new URLRequest("Soundsc2t16.mp3"));
+mySoundc2t1.load(new URLRequest("/sound/Soundsc2t1.mp3"));
+mySoundc2t2.load(new URLRequest("/sound/Soundsc2t2.mp3"));
+mySoundc2t3.load(new URLRequest("/sound/Soundsc2t3.mp3"));
+mySoundc2t4.load(new URLRequest("/sound/Soundsc2t4.mp3"));
+mySoundc2t5.load(new URLRequest("/sound/Soundsc2t5.mp3"));
+mySoundc2t6.load(new URLRequest("/sound/Soundsc2t6.mp3"));
+mySoundc2t7.load(new URLRequest("/sound/Soundsc2t7.mp3"));
+mySoundc2t8.load(new URLRequest("/sound/Soundsc2t8.mp3"));
+mySoundc2t9.load(new URLRequest("/sound/Soundsc2t9.mp3"));
+mySoundc2t10.load(new URLRequest("/sound/Soundsc2t10.mp3"));
+mySoundc2t11.load(new URLRequest("/sound/Soundsc2t11.mp3"));
+mySoundc2t12.load(new URLRequest("/sound/Soundsc2t12.mp3"));
+mySoundc2t13.load(new URLRequest("/sound/Soundsc2t13.mp3"));
+mySoundc2t14.load(new URLRequest("/sound/Soundsc2t14.mp3"));
+mySoundc2t15.load(new URLRequest("/sound/Soundsc1t15.mp3"));
+mySoundc2t16.load(new URLRequest("/sound/Soundsc2t16.mp3"));
 
-mySoundc3t1.load(new URLRequest("Soundsc3t1.mp3"));
-mySoundc3t2.load(new URLRequest("Soundsc3t2.mp3"));
-mySoundc3t3.load(new URLRequest("Soundsc3t3.mp3"));
-mySoundc3t4.load(new URLRequest("Soundsc3t4.mp3"));
-mySoundc3t5.load(new URLRequest("Soundsc3t5.mp3"));
-mySoundc3t6.load(new URLRequest("Soundsc3t6.mp3"));
-mySoundc3t7.load(new URLRequest("Soundsc3t7.mp3"));
-mySoundc3t8.load(new URLRequest("Soundsc3t8.mp3"));
-mySoundc3t9.load(new URLRequest("Soundsc3t9.mp3"));
-mySoundc3t10.load(new URLRequest("Soundsc3t10.mp3"));
-mySoundc3t11.load(new URLRequest("Soundsc3t11.mp3"));
-mySoundc3t12.load(new URLRequest("Soundsc3t12.mp3"));
-mySoundc3t13.load(new URLRequest("Soundsc3t13.mp3"));
-mySoundc3t14.load(new URLRequest("Soundsc3t14.mp3"));
-mySoundc3t15.load(new URLRequest("Soundsc3t15.mp3"));
-mySoundc3t16.load(new URLRequest("Soundsc3t16.mp3"));
+mySoundc3t1.load(new URLRequest("/sound/Soundsc3t1.mp3"));
+mySoundc3t2.load(new URLRequest("/sound/Soundsc3t2.mp3"));
+mySoundc3t3.load(new URLRequest("/sound/Soundsc3t3.mp3"));
+mySoundc3t4.load(new URLRequest("/sound/Soundsc3t4.mp3"));
+mySoundc3t5.load(new URLRequest("/sound/Soundsc3t5.mp3"));
+mySoundc3t6.load(new URLRequest("/sound/Soundsc3t6.mp3"));
+mySoundc3t7.load(new URLRequest("/sound/Soundsc3t7.mp3"));
+mySoundc3t8.load(new URLRequest("/sound/Soundsc3t8.mp3"));
+mySoundc3t9.load(new URLRequest("/sound/Soundsc3t9.mp3"));
+mySoundc3t10.load(new URLRequest("/sound/Soundsc3t10.mp3"));
+mySoundc3t11.load(new URLRequest("/sound/Soundsc3t11.mp3"));
+mySoundc3t12.load(new URLRequest("/sound/Soundsc3t12.mp3"));
+mySoundc3t13.load(new URLRequest("/sound/Soundsc3t13.mp3"));
+mySoundc3t14.load(new URLRequest("/sound/Soundsc3t14.mp3"));
+mySoundc3t15.load(new URLRequest("/sound/Soundsc3t15.mp3"));
+mySoundc3t16.load(new URLRequest("/sound/Soundsc3t16.mp3"));
 
-mySoundc4t1.load(new URLRequest("Soundsc4t1.mp3"));
-mySoundc4t2.load(new URLRequest("Soundsc4t2.mp3"));
-mySoundc4t3.load(new URLRequest("Soundsc4t3.mp3"));
-mySoundc4t4.load(new URLRequest("Soundsc4t4.mp3"));
-mySoundc4t5.load(new URLRequest("Soundsc4t5.mp3"));
-mySoundc4t6.load(new URLRequest("Soundsc4t6.mp3"));
-mySoundc4t7.load(new URLRequest("Soundsc4t7.mp3"));
-mySoundc4t8.load(new URLRequest("Soundsc4t8.mp3"));
-mySoundc4t9.load(new URLRequest("Soundsc4t9.mp3"));
-mySoundc4t10.load(new URLRequest("Soundsc4t10.mp3"));
-mySoundc4t11.load(new URLRequest("Soundsc4t11.mp3"));
-mySoundc4t12.load(new URLRequest("Soundsc4t12.mp3"));
-mySoundc4t13.load(new URLRequest("Soundsc4t13.mp3"));
-mySoundc4t14.load(new URLRequest("Soundsc4t14.mp3"));
-mySoundc4t15.load(new URLRequest("Soundsc4t15.mp3"));
-mySoundc4t16.load(new URLRequest("Soundsc4t16.mp3"));
+mySoundc4t1.load(new URLRequest("/sound/Soundsc4t1.mp3"));
+mySoundc4t2.load(new URLRequest("/sound/Soundsc4t2.mp3"));
+mySoundc4t3.load(new URLRequest("/sound/Soundsc4t3.mp3"));
+mySoundc4t4.load(new URLRequest("/sound/Soundsc4t4.mp3"));
+mySoundc4t5.load(new URLRequest("/sound/Soundsc4t5.mp3"));
+mySoundc4t6.load(new URLRequest("/sound/Soundsc4t6.mp3"));
+mySoundc4t7.load(new URLRequest("/sound/Soundsc4t7.mp3"));
+mySoundc4t8.load(new URLRequest("/sound/Soundsc4t8.mp3"));
+mySoundc4t9.load(new URLRequest("/sound/Soundsc4t9.mp3"));
+mySoundc4t10.load(new URLRequest("/sound/Soundsc4t10.mp3"));
+mySoundc4t11.load(new URLRequest("/sound/Soundsc4t11.mp3"));
+mySoundc4t12.load(new URLRequest("/sound/Soundsc4t12.mp3"));
+mySoundc4t13.load(new URLRequest("/sound/Soundsc4t13.mp3"));
+mySoundc4t14.load(new URLRequest("/sound/Soundsc4t14.mp3"));
+mySoundc4t15.load(new URLRequest("/sound/Soundsc4t15.mp3"));
+mySoundc4t16.load(new URLRequest("/sound/Soundsc4t16.mp3"));
 
-mySoundc5t1.load(new URLRequest("Soundsc5t1.mp3"));
-mySoundc5t2.load(new URLRequest("Soundsc5t2.mp3"));
-mySoundc5t3.load(new URLRequest("Soundsc5t3.mp3"));
-mySoundc5t4.load(new URLRequest("Soundsc5t4.mp3"));
-mySoundc5t5.load(new URLRequest("Soundsc5t5.mp3"));
-mySoundc5t6.load(new URLRequest("Soundsc5t6.mp3"));
-mySoundc5t7.load(new URLRequest("Soundsc5t7.mp3"));
-mySoundc5t8.load(new URLRequest("Soundsc5t8.mp3"));
-mySoundc5t9.load(new URLRequest("Soundsc5t9.mp3"));
-mySoundc5t10.load(new URLRequest("Soundsc5t10.mp3"));
-mySoundc5t11.load(new URLRequest("Soundsc5t11.mp3"));
-mySoundc5t12.load(new URLRequest("Soundsc5t12.mp3"));
-mySoundc5t13.load(new URLRequest("Soundsc5t13.mp3"));
-mySoundc5t14.load(new URLRequest("Soundsc7t14.mp3"));
-mySoundc5t15.load(new URLRequest("Soundsc5t15.mp3"));
-mySoundc5t16.load(new URLRequest("Soundsc5t16.mp3"));
+mySoundc5t1.load(new URLRequest("/sound/Soundsc5t1.mp3"));
+mySoundc5t2.load(new URLRequest("/sound/Soundsc5t2.mp3"));
+mySoundc5t3.load(new URLRequest("/sound/Soundsc5t3.mp3"));
+mySoundc5t4.load(new URLRequest("/sound/Soundsc5t4.mp3"));
+mySoundc5t5.load(new URLRequest("/sound/Soundsc5t5.mp3"));
+mySoundc5t6.load(new URLRequest("/sound/Soundsc5t6.mp3"));
+mySoundc5t7.load(new URLRequest("/sound/Soundsc5t7.mp3"));
+mySoundc5t8.load(new URLRequest("/sound/Soundsc5t8.mp3"));
+mySoundc5t9.load(new URLRequest("/sound/Soundsc5t9.mp3"));
+mySoundc5t10.load(new URLRequest("/sound/Soundsc5t10.mp3"));
+mySoundc5t11.load(new URLRequest("/sound/Soundsc5t11.mp3"));
+mySoundc5t12.load(new URLRequest("/sound/Soundsc5t12.mp3"));
+mySoundc5t13.load(new URLRequest("/sound/Soundsc5t13.mp3"));
+mySoundc5t14.load(new URLRequest("/sound/Soundsc7t14.mp3"));
+mySoundc5t15.load(new URLRequest("/sound/Soundsc5t15.mp3"));
+mySoundc5t16.load(new URLRequest("/sound/Soundsc5t16.mp3"));
 
-mySoundc6t1.load(new URLRequest("Soundsc6t1.mp3"));
-mySoundc6t2.load(new URLRequest("Soundsc6t2.mp3"));
-mySoundc6t3.load(new URLRequest("Soundsc6t3.mp3"));
-mySoundc6t4.load(new URLRequest("Soundsc6t4.mp3"));
-mySoundc6t5.load(new URLRequest("Soundsc6t5.mp3"));
-mySoundc6t6.load(new URLRequest("Soundsc6t6.mp3"));
-mySoundc6t7.load(new URLRequest("Soundsc6t7.mp3"));
-mySoundc6t8.load(new URLRequest("Soundsc6t8.mp3"));
-mySoundc6t9.load(new URLRequest("Soundsc6t9.mp3"));
-mySoundc6t10.load(new URLRequest("Soundsc6t10.mp3"));
-mySoundc6t11.load(new URLRequest("Soundsc6t11.mp3"));
-mySoundc6t12.load(new URLRequest("Soundsc6t12.mp3"));
-mySoundc6t13.load(new URLRequest("Soundsc6t13.mp3"));
-mySoundc6t14.load(new URLRequest("Soundsc6t14.mp3"));
-mySoundc6t15.load(new URLRequest("Soundsc6t15.mp3"));
-mySoundc6t16.load(new URLRequest("Soundsc6t16.mp3"));
+mySoundc6t1.load(new URLRequest("/sound/Soundsc6t1.mp3"));
+mySoundc6t2.load(new URLRequest("/sound/Soundsc6t2.mp3"));
+mySoundc6t3.load(new URLRequest("/sound/Soundsc6t3.mp3"));
+mySoundc6t4.load(new URLRequest("/sound/Soundsc6t4.mp3"));
+mySoundc6t5.load(new URLRequest("/sound/Soundsc6t5.mp3"));
+mySoundc6t6.load(new URLRequest("/sound/Soundsc6t6.mp3"));
+mySoundc6t7.load(new URLRequest("/sound/Soundsc6t7.mp3"));
+mySoundc6t8.load(new URLRequest("/sound/Soundsc6t8.mp3"));
+mySoundc6t9.load(new URLRequest("/sound/Soundsc6t9.mp3"));
+mySoundc6t10.load(new URLRequest("/sound/Soundsc6t10.mp3"));
+mySoundc6t11.load(new URLRequest("/sound/Soundsc6t11.mp3"));
+mySoundc6t12.load(new URLRequest("/sound/Soundsc6t12.mp3"));
+mySoundc6t13.load(new URLRequest("/sound/Soundsc6t13.mp3"));
+mySoundc6t14.load(new URLRequest("/sound/Soundsc6t14.mp3"));
+mySoundc6t15.load(new URLRequest("/sound/Soundsc6t15.mp3"));
+mySoundc6t16.load(new URLRequest("/sound/Soundsc6t16.mp3"));
 
-mySoundc7t1.load(new URLRequest("Soundsc7t1.mp3"));
-mySoundc7t2.load(new URLRequest("Soundsc7t2.mp3"));
-mySoundc7t3.load(new URLRequest("Soundsc7t3.mp3"));
-mySoundc7t4.load(new URLRequest("Soundsc7t4.mp3"));
-mySoundc7t5.load(new URLRequest("Soundsc7t5.mp3"));
-mySoundc7t6.load(new URLRequest("Soundsc7t6.mp3"));
-mySoundc7t7.load(new URLRequest("Soundsc7t7.mp3"));
-mySoundc7t8.load(new URLRequest("Soundsc7t8.mp3"));
-mySoundc7t9.load(new URLRequest("Soundsc7t9.mp3"));
-mySoundc7t10.load(new URLRequest("Soundsc7t10.mp3"));
-mySoundc7t11.load(new URLRequest("Soundsc7t11.mp3"));
-mySoundc7t12.load(new URLRequest("Soundsc7t12.mp3"));
-mySoundc7t13.load(new URLRequest("Soundsc7t13.mp3"));
-mySoundc7t14.load(new URLRequest("Soundsc7t14.mp3"));
-mySoundc7t15.load(new URLRequest("Soundsc7t15.mp3"));
-mySoundc7t16.load(new URLRequest("Soundsc7t16.mp3"));
+mySoundc7t1.load(new URLRequest("/sound/Soundsc7t1.mp3"));
+mySoundc7t2.load(new URLRequest("/sound/Soundsc7t2.mp3"));
+mySoundc7t3.load(new URLRequest("/sound/Soundsc7t3.mp3"));
+mySoundc7t4.load(new URLRequest("/sound/Soundsc7t4.mp3"));
+mySoundc7t5.load(new URLRequest("/sound/Soundsc7t5.mp3"));
+mySoundc7t6.load(new URLRequest("/sound/Soundsc7t6.mp3"));
+mySoundc7t7.load(new URLRequest("/sound/Soundsc7t7.mp3"));
+mySoundc7t8.load(new URLRequest("/sound/Soundsc7t8.mp3"));
+mySoundc7t9.load(new URLRequest("/sound/Soundsc7t9.mp3"));
+mySoundc7t10.load(new URLRequest("/sound/Soundsc7t10.mp3"));
+mySoundc7t11.load(new URLRequest("/sound/Soundsc7t11.mp3"));
+mySoundc7t12.load(new URLRequest("/sound/Soundsc7t12.mp3"));
+mySoundc7t13.load(new URLRequest("/sound/Soundsc7t13.mp3"));
+mySoundc7t14.load(new URLRequest("/sound/Soundsc7t14.mp3"));
+mySoundc7t15.load(new URLRequest("/sound/Soundsc7t15.mp3"));
+mySoundc7t16.load(new URLRequest("/sound/Soundsc7t16.mp3"));
 
-mySoundc8t1.load(new URLRequest("Soundsc8t1.mp3"));
-mySoundc8t2.load(new URLRequest("Soundsc8t2.mp3"));
-mySoundc8t3.load(new URLRequest("Soundsc8t3.mp3"));
-mySoundc8t4.load(new URLRequest("Soundsc8t4.mp3"));
-mySoundc8t5.load(new URLRequest("Soundsc8t5.mp3"));
-mySoundc8t6.load(new URLRequest("Soundsc8t6.mp3"));
-mySoundc8t7.load(new URLRequest("Soundsc8t7.mp3"));
-mySoundc8t8.load(new URLRequest("Soundsc8t8.mp3"));
-mySoundc8t9.load(new URLRequest("Soundsc8t9.mp3"));
-mySoundc8t10.load(new URLRequest("Soundsc8t10.mp3"));
-mySoundc8t11.load(new URLRequest("Soundsc8t11.mp3"));
-mySoundc8t12.load(new URLRequest("Soundsc8t12.mp3"));
-mySoundc8t13.load(new URLRequest("Soundsc8t13.mp3"));
-mySoundc8t14.load(new URLRequest("Soundsc8t14.mp3"));
-mySoundc8t15.load(new URLRequest("Soundsc8t15.mp3"));
-mySoundc8t16.load(new URLRequest("Soundsc8t16.mp3"));
+mySoundc8t1.load(new URLRequest("/sound/Soundsc8t1.mp3"));
+mySoundc8t2.load(new URLRequest("/sound/Soundsc8t2.mp3"));
+mySoundc8t3.load(new URLRequest("/sound/Soundsc8t3.mp3"));
+mySoundc8t4.load(new URLRequest("/sound/Soundsc8t4.mp3"));
+mySoundc8t5.load(new URLRequest("/sound/Soundsc8t5.mp3"));
+mySoundc8t6.load(new URLRequest("/sound/Soundsc8t6.mp3"));
+mySoundc8t7.load(new URLRequest("/sound/Soundsc8t7.mp3"));
+mySoundc8t8.load(new URLRequest("/sound/Soundsc8t8.mp3"));
+mySoundc8t9.load(new URLRequest("/sound/Soundsc8t9.mp3"));
+mySoundc8t10.load(new URLRequest("/sound/Soundsc8t10.mp3"));
+mySoundc8t11.load(new URLRequest("/sound/Soundsc8t11.mp3"));
+mySoundc8t12.load(new URLRequest("/sound/Soundsc8t12.mp3"));
+mySoundc8t13.load(new URLRequest("/sound/Soundsc8t13.mp3"));
+mySoundc8t14.load(new URLRequest("/sound/Soundsc8t14.mp3"));
+mySoundc8t15.load(new URLRequest("/sound/Soundsc8t15.mp3"));
+mySoundc8t16.load(new URLRequest("/sound/Soundsc8t16.mp3"));
 
 var channel:SoundChannel;
 
@@ -455,7 +515,7 @@ tempoController.stepSize = 10;
 
 function timeBarTempo(e:Event):void
 {
-  tempo = tempoController.value;
+	tempo = tempoController.value;
 	this.letsMoveTimeBar.delay = tempo;
 }
 
